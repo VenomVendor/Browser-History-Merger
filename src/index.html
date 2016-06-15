@@ -2,27 +2,16 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Browser History Merger</title>
 </head>
 <body>
-<h1>Hello World!</h1>
-<!-- All of the Node.js APIs are available in this renderer process. -->
-We are using node
-<script>document.write(process.versions.node)</script>
-,
-Chromium
-<script>document.write(process.versions.chrome)</script>
-,
-and Electron
-<script>document.write(process.versions.electron)</script>
-.
-
-<button class="demo-button" id="select-directory-new">View Demo</button>
-<span id="selected-file">NIL</span>
+<button class="demo-button" id="select-directory-new">Open databases</button>
+<br>
+<span id="selected-files"></span>
 </body>
 
 <script>
     // You can also require other files to run in this process
-    require('./build/scripts/renderer-compiled.js');
+    require('./scripts/renderer.js');
 </script>
 </html>

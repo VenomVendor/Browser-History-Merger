@@ -7,7 +7,8 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 const srcFiles = {
     client: ['src/**/*.js', '!src/**/vendor/*.js'],
     clientVendor: ['src/**/vendor/*.js'],
-    html: ['src/**/*.html']
+    html: ['src/**/*.html'],
+    sql: ['src/**/*.sql']
 };
 
 const destFiles = {
@@ -16,7 +17,7 @@ const destFiles = {
 
 const DEBUG = true;
 const OBFUSCATE = false;
-const RENAME = true;
+const RENAME = false;
 const $ = gulpLoadPlugins();
 
 /**
@@ -75,7 +76,7 @@ gulp.task('minify-js', () => gulp.src(srcFiles.client)
     .pipe(RENAME ? $.rename({ suffix: '.min' }) : $.util.noop())
     .pipe(gulp.dest(destFiles.dir))
     .pipe(DEBUG ? $.util.noop() : $.uglify())
-    .pipe(!DEBUG && OBFUSCATE ? $.util.noop() : $.jsObfuscator())
+    .pipe(!DEBUG && OBFUSCATE ? $.jsObfuscator() : $.util.noop())
     .pipe(gulp.dest(destFiles.dir)));
 
 /**
@@ -92,11 +93,22 @@ gulp.task('clearConsole', (done) => {
 gulp.task('vendor-js', () => copier(srcFiles.clientVendor));
 
 /**
+ * copy sql queries to build dir.
+ */
+gulp.task('sql', () => copier(srcFiles.sql));
+
+/**
+ * copy sql queries to build dir.
+ */
+gulp.task('html', () => copier(srcFiles.html));
+
+/**
  * watches all required tasks.
  */
 gulp.task('watch', (done) => {
     gulp.watch(srcFiles.client, gulp.parallel('clearConsole', gulp.series('eslintClient', 'minify-js')));
     gulp.watch(srcFiles.clientVendor, gulp.parallel('vendor-js'));
+    gulp.watch([srcFiles.html], gulp.parallel('html'));
     gulp.watch(['*.js'], gulp.parallel('js-self-lint'));
     done();
 });
@@ -123,6 +135,8 @@ gulp.task('travis',
         'clean',
         gulp.parallel(
             'vendor-js',
+            'sql',
+            'html',
             'js-self-lint',
             gulp.series('eslint', 'minify-js')
         )
@@ -136,6 +150,8 @@ gulp.task('default',
         'clean',
         gulp.parallel(
             'vendor-js',
+            'sql',
+            'html',
             'js-self-lint',
             gulp.series('eslint', 'minify-js')
         ),

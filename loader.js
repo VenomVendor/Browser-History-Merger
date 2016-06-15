@@ -10,13 +10,23 @@ let mainWindow;
 
 const createWindow = () => {
     // Create the browser window.
-    mainWindow = new BrowserWindow({});
+    mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        show: false,
+        title: 'Browser History Merger',
+        center: true,
+        resizable: true,
+        movable: true,
+        minimizable: true,
+        maximizable: true
+    });
 
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${__dirname}/src/index.html`);
+    mainWindow.loadURL(`file://${__dirname}/build/index.html`);
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
@@ -25,6 +35,9 @@ const createWindow = () => {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
+
+    mainWindow.show();
+    mainWindow.maximize();
 };
 
 // This method will be called when Electron has finished
@@ -48,6 +61,5 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
