@@ -1,13 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
+
 let selectedFiles;
 const analyzeDb = (index, callback) => {
-    let skipBuggyIteration = true;
     const existingDb = new sqlite3.Database(selectedFiles[index]);
     existingDb.get('select * from sqlite_master', (err) => {
         if (err !== true && err) {
             callback(err);
-        } else if (skipBuggyIteration) {
-            skipBuggyIteration = false;
         } else if (++index < selectedFiles.length) {
             analyzeDb(index, callback);
         } else {

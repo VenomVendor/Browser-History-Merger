@@ -1,7 +1,11 @@
 import console from 'better-console';
+
 import childProcess from 'child_process';
+
 import del from 'del';
+
 import gulp from 'gulp';
+
 import gulpLoadPlugins from 'gulp-load-plugins';
 
 const srcFiles = {

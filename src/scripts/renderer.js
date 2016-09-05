@@ -3,8 +3,11 @@
  */
 import fs from 'fs';
 import { remote } from 'electron';
+
 import Analyser from './controller/analyser';
+
 const sqlite = require('sqlite3').verbose();
+
 const analyser = new Analyser();
 const dialog = remote.dialog;
 const outputPath = 'final.sqlite';
